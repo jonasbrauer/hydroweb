@@ -91,16 +91,28 @@
 
       </div>
     </div>
+    <!-- DETAIL FOOTER -->
     <footer v-if="!task.locked" class="card-footer"
       v-bind:class="{'is-hidden': !is_detail || is_edit}">
-      <a v-on:click="toggleEdit()" class="card-footer-item">
+
+      <a v-if="!is_delete_modal" v-on:click="toggleEdit()" class="card-footer-item">
         <strong>Edit</strong>
       </a>
-      <a v-on:click="toggleDeleteModal()"
+      <a v-if="!is_delete_modal" v-on:click="toggleDeleteModal()"
       class="card-footer-item has-text-danger">
         <strong>Delete</strong>
       </a>
-      <a v-on:click="toggleDetail()" class="card-footer-item has-text-black">
+      <a v-if="!is_delete_modal" v-on:click="toggleDetail()"
+         class="card-footer-item has-text-black">
+        <strong>Cancel</strong>
+      </a>
+      <!-- really delete? -->
+      <a v-if="is_delete_modal" v-on:click="deleteTask()"
+         class="card-footer-item has-text-danger">
+        <strong>You sure? Yes!</strong>
+      </a>
+      <a v-if="is_delete_modal" v-on:click="toggleDeleteModal()"
+         class="card-footer-item has-text-black">
         <strong>Cancel</strong>
       </a>
     </footer>
@@ -193,29 +205,8 @@
       </a>
     </footer>
   </div>
-  <div :id="`task-${task.id}-detail`"></div>
+  <!-- <div :id="`task-${task.id}-detail`"></div> -->
 
-  <!-- DELETE MODAL -->
-  <div class="modal is-clipped" v-bind:class="{'is-active': is_delete_modal}">
-    <div class="modal-background"></div>
-    <div class="modal-content">
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">Delete?</p>
-          <button v-on:click="toggleDeleteModal();delete_error=null"
-          class="delete" aria-label="close"></button>
-        </header>
-        <section class="modal-card-body">
-          <p v-if="delete_error">[ERROR] {{ delete_error }}</p>
-          <p v-else>Are you really sure you want to delete task '{{ task.name }}'?</p>
-        </section>
-        <footer class="modal-card-foot">
-          <button v-on:click="deleteTask()" class="button is-danger is-fullwidth">Delete</button>
-          <button v-on:click="toggleDeleteModal()" class="button is-fullwidth">Cancel</button>
-        </footer>
-      </div>
-    </div>
-  </div>
 </div>
 </template>
 
