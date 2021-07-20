@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="mb-5">
     <nav class="navbar"
-    role="navigation" aria-label="main navigation">
+         role="navigation" aria-label="main navigation">
       <!-- logo -->
       <div class="navbar-brand">
         <a class="navbar-item" href="/">
@@ -51,7 +51,7 @@
         </button>
 
     </div>
-    {{ interval_id }}
+
     <!-- DEVICE CONTAINER -->
     <div v-if="active_device != null">
       <Device :device="active_device"></Device>
@@ -59,19 +59,35 @@
 
     <!-- no devices -->
     <div v-if="devices.length < 1">
-      <div class="container my-5 py-5">
-        <section class="hero is-large">
+      <div class="container my-5 py-5 has-text-centered">
+        <section class="hero is-medium">
           <div class="hero-body">
             <p class="title">No active devices</p>
             <p class="subtitle ml-5">
-              seems like you got nothing connected...
+              Seems like you've got nothing connected...
             </p>
           </div>
         </section>
       </div>
+        <!-- scan -->
+        <div class="has-text-centered">
+          <p class="subtitle is-6">
+            <small>Try to rescan configured ports.</small>
+          </p>
+          <button v-on:click="postScan" :class="{
+            button:true,
+            'is-link':true,
+            'is-outlined':true,
+            'is-loading':scan_loading
+          }" style="min-width: 9em;">
+            <span class="icon is-small">
+              <i class="fas fa-barcode"></i>
+            </span>
+            <span>Scan</span>
+          </button>
+        </div>
     </div>
-    <div class="my-5"/>
-    <div class="my-5"/>
+
   </div>
 </template>
 
@@ -80,7 +96,7 @@ import axios from 'axios';
 import Device from './components/Device.vue';
 import Constants from './components/Constants.vue';
 
-const INTERVAL_VALULE = 500;
+const INTERVAL_VALUE = 1000;
 
 export default {
   components: {
@@ -122,11 +138,11 @@ export default {
           this.stopInterval();
         });
     },
-    getDevice(id) {
-      if (!id) {
+    getDevice() {
+      if (this.active_device == null) {
         return;
       }
-      const path = `${Constants.HOST_URL}/devices/${id}`;
+      const path = `${Constants.HOST_URL}/devices/${this.active_device.id}`;
       console.info(`Getting: ${path}`);
       axios.get(path)
         .then((res) => {
@@ -137,6 +153,8 @@ export default {
           }
         })
         .catch(() => {
+          this.active_device = null;
+          this.getDevices();
         });
     },
     postScan() {
@@ -145,6 +163,7 @@ export default {
       axios.post(path)
         .finally(() => {
           this.scan_loading = false;
+          this.getDevices();
         });
     },
 
@@ -156,8 +175,8 @@ export default {
         this.stopInterval();
       }
       this.interval_id = setInterval(() => {
-        this.getDevice(this.active_device.id);
-      }, INTERVAL_VALULE);
+        this.getDevice();
+      }, INTERVAL_VALUE);
       console.error('interval started');
     },
     stopInterval() {
@@ -166,10 +185,10 @@ export default {
     },
 
     toggleInterval() {
-      if (this.interval_id == null) {
-        this.startInterval();
-      } else {
+      if (this.interval_id) {
         this.stopInterval();
+      } else {
+        this.startInterval();
       }
     },
 
@@ -237,3 +256,13 @@ export default {
 };
 
 </script>
+<style>
+  #app {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-touch-callout: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+</style>

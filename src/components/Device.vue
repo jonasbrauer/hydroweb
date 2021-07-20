@@ -190,9 +190,27 @@
               'is-loading': refresh_is_loading,
               'is-success':true,
               'is-outlined':true
-            }"
+            }" style="min-width: 6em;"
           >
             <span v-if="!refresh_is_loading">Refresh</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- delete -->
+      <div class="level is-mobile">
+        <div class="level-left">
+          <p>Delete (removes all associated data)</p>
+        </div>
+        <div class="level-right subtitle is-6">
+          <button v-on:click="postDelete()"
+            :class="{
+              button:true,
+              'is-danger':true,
+              'is-outlined':true
+            }"
+          >
+            Delete
           </button>
         </div>
       </div>
@@ -238,6 +256,10 @@ export default {
           this.device.name = this.form_name;
         });
       this.editing_mode = false;
+    },
+    postDelete() {
+      const path = `${Constants.HOST_URL}/devices/${this.device.id}`;
+      axios.delete(path);
     },
     postScheduler() {
       const path = `${Constants.HOST_URL}/devices/${this.device.id}/scheduler`;

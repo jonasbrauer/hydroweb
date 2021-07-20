@@ -68,7 +68,7 @@
         </div>
 
         <!-- error -->
-        <div v-if="task.last_run_error" class="level mb-2 is-mobile">
+        <div v-if="task.last_run_error" class="level mb-2">
           <div class="level-left">Error</div>
           <div class="level-right">
               <strong class="has-text-danger">{{ task.last_run_error }}</strong>
