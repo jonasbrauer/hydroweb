@@ -2,53 +2,65 @@
 <div>
   <!-- CARD -->
   <div class="card mt-1 mb-1">
-    <a v-on:click="toggleDetail()">
+
+    <!-- HEADER -->
     <header class="card-header">
-      <p class="card-header-title">
-        <img v-if="task.last_run_success" class="icon is-small" src="status_online.png"/>
+      <p v-on:click="toggleDetail" class="card-header-title">
+        <img v-if="task.last_run_success && !task.paused"
+             class="icon is-small" src="status_online.png"/>
+        <img v-else-if="task.paused" class="icon is-small" src="status_paused.png"/>
         <img v-else class="icon is-small" src="status_offline.ico"/>
+
         <span class="mx-4">{{ task.name }}</span>
+
+        <span v-if="task.locked" class="icon">
+          <i class="fa fa-lock" aria-hidden="true"></i>
+        </span>
       </p>
-      <a class="card-header-icon">
-      <i class="fa fa-play " aria-hidden="true"></i>
+
+      <!-- PLAY/PAUSE - only for unlocked tasks -->
+      <a v-if="!task.locked" v-on:click="postResumeTask" class="card-header-icon">
+        <i class="fa fa-play " aria-hidden="true"></i>
       </a>
-      <a class="card-header-icon">
+      <a v-if="!task.locked" v-on:click="postPauseTask" class="card-header-icon">
         <i class="fa fa-pause" aria-hidden="true"></i>
       </a>
-      <a class="card-header-icon">
-        <i class="fas fa-eye"></i>
-      </a>
     </header>
-    </a>
 
-    <!-- content -->
+    <!-- CONTENT -->
     <div class="card-content" v-bind:class="{'is-hidden': !is_detail || is_edit}">
       <div class="content">
-        <div class="level mb-2">
+        <div class="level mb-2 is-mobile">
           <div class="level-left">Type</div>
           <div class="level-right">
               <strong>{{ task.type }}</strong>
           </div>
         </div>
-        <div class="level mb-2">
+        <div class="level mb-2 is-mobile">
           <div class="level-left">Schedule</div>
           <div class="level-right">
-              <strong>{{ task.cron }}</strong>
+            <strong>{{ task.cron }}</strong>
           </div>
         </div>
-        <div class="level mb-2">
+        <div class="level mb-2 is-mobile">
+          <div class="level-left">Paused</div>
+          <div class="level-right">
+            <strong>{{ task.paused }}</strong>
+          </div>
+        </div>
+        <div class="level mb-2  is-mobile">
           <div class="level-left">Control</div>
           <div class="level-right">
               <strong>{{ task.control ? task.control.description : "no control"}}</strong>
           </div>
         </div>
-        <div class="level mb-2">
+        <div class="level mb-2  is-mobile">
           <div class="level-left">Sensor</div>
           <div class="level-right">
               <strong>{{ task.sensor ? task.sensor.description : "no sensor"}}</strong>
           </div>
         </div>
-        <div class="level mb-2">
+        <div class="level mb-2  is-mobile">
           <div class="level-left">Last run</div>
           <div class="level-right">
               <strong>{{ task.last_run ? formatTime(task.last_run) : 'not yet'}}</strong>
@@ -56,7 +68,7 @@
         </div>
 
         <!-- error -->
-        <div v-if="task.last_run_error" class="level mb-2">
+        <div v-if="task.last_run_error" class="level mb-2 is-mobile">
           <div class="level-left">Error</div>
           <div class="level-right">
               <strong class="has-text-danger">{{ task.last_run_error }}</strong>
@@ -79,11 +91,13 @@
 
       </div>
     </div>
-    <footer class="card-footer" v-bind:class="{'is-hidden': !is_detail || is_edit}">
+    <footer v-if="!task.locked" class="card-footer"
+      v-bind:class="{'is-hidden': !is_detail || is_edit}">
       <a v-on:click="toggleEdit()" class="card-footer-item">
         <strong>Edit</strong>
       </a>
-      <a v-on:click="toggleDeleteModal()" class="card-footer-item has-text-danger">
+      <a v-on:click="toggleDeleteModal()"
+      class="card-footer-item has-text-danger">
         <strong>Delete</strong>
       </a>
       <a v-on:click="toggleDetail()" class="card-footer-item has-text-black">
@@ -279,6 +293,14 @@ export default {
         });
       this.is_edit = false;
       this.is_detail = true;
+    },
+    postPauseTask() {
+      const path = `${Constants.HOST_URL}/devices/${this.device.id}/tasks/${this.task.id}/pause`;
+      axios.post(path);
+    },
+    postResumeTask() {
+      const path = `${Constants.HOST_URL}/devices/${this.device.id}/tasks/${this.task.id}/resume`;
+      axios.post(path);
     },
     deleteTask() {
       const path = `${Constants.HOST_URL}/devices/${this.device.id}/tasks/${this.task.id}`;
