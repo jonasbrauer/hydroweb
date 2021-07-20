@@ -11,28 +11,6 @@
           <h5 class="title is-5">HYDRO-HUB</h5>
         </div>
       </div>
-      <!-- refresh indicator -->
-      <!-- <div class="navbar-end mr-2">
-        <div class="level">
-          <div class="level-item">
-            <div class="field has-addons">
-              <p v-if="interval_id" class="control">
-                <button class="button is-primary is-loading" disabled>X</button>
-              </p>
-              <p v-else class="control">
-                <button class="button is-warning" disabled>
-                  <i class="fa fa-pause" aria-hidden="true"></i>
-                </button>
-              </p>
-              <p class="control">
-                <a v-on:click="toggleInterval()"
-                class="button">refresh is {{ interval_id ? 'active' : 'stoped' }}
-                </a>
-              </p>
-            </div>
-          </div>
-      </div>
-      </div> -->
     </nav>
     <!-- DEVICES MENU NAV DROPDOWN -->
     <div v-if="devices.length > 0">

@@ -13,14 +13,18 @@
     <!-- edit -->
     <div v-else class="level-left">
       <div class="field is-grouped">
-        <div class="control">
+        <div class="control mr-0">
           <input v-model="edit_name" class="input" type="text">
         </div>
-        <div class="control">
-          <a v-on:click="sensorEdit" class="button is-success is-outlined">save</a>
+        <div class="control mx-1">
+          <button v-on:click="sensorEdit" class="button is-outlined">
+            <span class="icon is-medium"><img src="save_ico.png"/></span>
+          </button>
         </div>
         <div class="control">
-          <a v-on:click="toggleEdit" class="button is-danger is-outlined">cancel</a>
+          <button v-on:click="toggleEdit" class="button is-outlined">
+            <span class="icon is-medium"><img src="cancel_ico.png"/></span>
+          </button>
         </div>
       </div>
     </div>

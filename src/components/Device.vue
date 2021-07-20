@@ -88,6 +88,7 @@
       <!-- add task -->
       <AddTask :device="device"></AddTask>
     </div>
+
     <!-- SETTINGS -->
     <div v-if="settings" class="container">
       <div class="level">
@@ -176,6 +177,27 @@
       </div>
       <div id="categorize"></div>
 
+      <!-- refresh -->
+      <hr>
+      <div class="level is-mobile">
+        <div class="level-left">
+          <p>Refresh (try to re-establish connection)</p>
+        </div>
+        <div class="level-right subtitle is-6">
+          <button v-on:click="postRefresh"
+            :class="{
+              button:true,
+              'is-loading': refresh_is_loading,
+              'is-success':true,
+              'is-outlined':true
+            }"
+          >
+            <span v-if="!refresh_is_loading">Refresh</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- advanced -->
       <div>
         <button class="button is-light is-fullwidth mt-2">
           <i class="fa fa-cogs" aria-hidden="true"></i>
@@ -220,6 +242,14 @@ export default {
     postScheduler() {
       const path = `${Constants.HOST_URL}/devices/${this.device.id}/scheduler`;
       axios.post(path);
+    },
+    postRefresh() {
+      const path = `${Constants.HOST_URL}/devices/${this.device.id}/refresh`;
+      this.refresh_is_loading = true;
+      axios.post(path)
+        .finally(() => {
+          this.refresh_is_loading = false;
+        });
     },
     postCategorize() {
       const path = `${Constants.HOST_URL}/devices/${this.device.id}/categorize`;
@@ -280,6 +310,8 @@ export default {
       settings: false,
 
       editing_mode: false,
+
+      refresh_is_loading: false,
 
       options: {
         month: 'numeric',
