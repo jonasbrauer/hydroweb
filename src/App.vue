@@ -37,9 +37,21 @@
             </a>
           </nav>
         </div>
+        <!-- scan -->
+        <button v-on:click="postScan" :class="{
+          button:true,
+          'is-fullwidth':true,
+          'is-link':true,
+          'is-loading':scan_loading
+        }">
+          <span class="icon is-small">
+            <i class="fas fa-barcode"></i>
+          </span>
+          <span>Scan</span>
+        </button>
 
     </div>
-
+    {{ interval_id }}
     <!-- DEVICE CONTAINER -->
     <div v-if="active_device != null">
       <Device :device="active_device"></Device>
@@ -83,6 +95,8 @@ export default {
       server_down: false,
       panel_active: false,
       interval_id: null,
+
+      scan_loading: false,
     };
   },
   methods: {
@@ -125,12 +139,20 @@ export default {
         .catch(() => {
         });
     },
+    postScan() {
+      const path = `${Constants.HOST_URL}/devices/scan`;
+      this.scan_loading = true;
+      axios.post(path)
+        .finally(() => {
+          this.scan_loading = false;
+        });
+    },
 
     // periodic polling
     startInterval() {
-      if (this.interval_id != null) {
+      if (this.interval_id) {
         // stop if running...
-        console.info('stopping..');
+        console.error('stopping..');
         this.stopInterval();
       }
       this.interval_id = setInterval(() => {
