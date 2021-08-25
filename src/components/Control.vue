@@ -24,10 +24,7 @@
     </div>
   </div>
   <div class="level-right">
-      <a v-if="control.state" v-on:click="controlAction"
-      class="button ml-4 is-success">on</a>
-      <a v-else v-on:click="controlAction(control.name)"
-      class="button ml-4 is-warning">off</a>
+    <ControlHandle :control="control" :device="device"/>
   </div>
 </div>
 </template>
@@ -35,9 +32,14 @@
 <script>
 import axios from 'axios';
 import Constants from './Constants.vue';
+import ControlHandle from './ControlHandle.vue';
 
 export default {
   props: ['control', 'device'],
+
+  components: {
+    ControlHandle,
+  },
 
   data() {
     return {

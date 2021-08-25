@@ -46,14 +46,14 @@
       </li>
     </ul>
     </div>
-    <!-- STATS -->
+    <!-- SCHEDULER -->
     <div v-if="stats" class="container">
-      <article v-if="device.scheduler_running" class="message is-success">
+      <article v-if="device.scheduler_running" class="message is-success my-1">
         <div class="message-body">
           Scheduler is <strong>running</strong>
         </div>
       </article>
-      <article v-else class="message is-warning">
+      <article v-else class="message is-warning my-1">
         <div class="message-body">
           Scheduler is <strong>stopped</strong>
           <a v-on:click="postScheduler()" class="ml-5">
@@ -61,9 +61,15 @@
           </a>
         </div>
       </article>
+      <!-- scheduler error -->
+      <article v-if="device.scheduler_error" class="message is-danger is-small my-0">
+        <div class="message-body">
+          Scheduler error: <b>{{ device.scheduler_error }}</b>
+        </div>
+      </article>
 
       <!-- sensors -->
-      <h4 v-if="device.sensors.length > 0" class="subtitle">Sensors</h4>
+      <h4 v-if="device.sensors.length > 0" class="subtitle mt-5">Sensors</h4>
       <div v-for="(sensor, index) in device.sensors" :key="'dev_sensor' + index">
         <Sensor :sensor="sensor" :device="device"></Sensor>
       </div>
@@ -179,7 +185,7 @@
 
       <!-- refresh -->
       <hr>
-      <div class="level is-mobile">
+      <div class="level">
         <div class="level-left">
           <p>Refresh (try to re-establish connection)</p>
         </div>
@@ -189,8 +195,9 @@
               button:true,
               'is-loading': refresh_is_loading,
               'is-success':true,
-              'is-outlined':true
-            }" style="min-width: 6em;"
+              'is-outlined':true,
+              'is-fullwidth':true
+            }" style="min-width: 10em;"
           >
             <span v-if="!refresh_is_loading">Refresh</span>
           </button>
@@ -198,7 +205,7 @@
       </div>
 
       <!-- delete -->
-      <div class="level is-mobile">
+      <div class="level">
         <div class="level-left">
           <p>Delete (removes all associated data)</p>
         </div>
@@ -207,8 +214,9 @@
             :class="{
               button:true,
               'is-danger':true,
-              'is-outlined':true
-            }"
+              'is-outlined':true,
+              'is-fullwidth':true
+            }" style="min-width: 10em;"
           >
             Delete
           </button>

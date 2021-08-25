@@ -48,19 +48,19 @@
             <strong>{{ task.paused }}</strong>
           </div>
         </div>
-        <div class="level mb-2  is-mobile">
+        <div class="level mb-2">
           <div class="level-left">Control</div>
           <div class="level-right">
               <strong>{{ task.control ? task.control.description : "no control"}}</strong>
           </div>
         </div>
-        <div class="level mb-2  is-mobile">
+        <div class="level mb-2">
           <div class="level-left">Sensor</div>
           <div class="level-right">
               <strong>{{ task.sensor ? task.sensor.description : "no sensor"}}</strong>
           </div>
         </div>
-        <div class="level mb-2  is-mobile">
+        <div class="level mb-2">
           <div class="level-left">Last run</div>
           <div class="level-right">
               <strong>{{ task.last_run ? formatTime(task.last_run) : 'not yet'}}</strong>
