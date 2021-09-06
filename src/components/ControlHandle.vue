@@ -22,13 +22,13 @@
           <input v-model="updated_control.value" type="number" style="max-width: 4em"
             :class="{
               input:true,
-              'is-info': updated_control.value != control.value
+              'is-success': updated_control.value != control.value
             }">
         </p>
         <p class="control">
           <button v-on:click="controlAction" style="min-width: 3em" :class="{
             'button': true,
-            'is-info': true,
+            'is-success': true,
             'is-loading': loading,
             'is-static': updated_control.value == control.value
           }">

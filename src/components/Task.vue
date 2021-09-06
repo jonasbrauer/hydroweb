@@ -6,10 +6,13 @@
     <!-- HEADER -->
     <header class="card-header">
       <p v-on:click="toggleDetail" class="card-header-title">
-        <img v-if="task.last_run_success && !task.paused"
-             class="icon is-small" src="status_online.png"/>
-        <img v-else-if="task.paused" class="icon is-small" src="status_paused.png"/>
-        <img v-else class="icon is-small" src="status_offline.ico"/>
+        <img v-if="task.paused" class="icon is-small" src="status_paused.png"/>
+        <span v-else-if="!device.scheduler_running" class="dot has-background-warning"/>
+        <span v-else :class="{
+              dot: true,
+              'has-background-success': task.last_run_success,
+              'has-background-danger': !task.last_run_success,
+            }"/>
 
         <span class="mx-4">{{ task.name }}</span>
 
@@ -48,13 +51,13 @@
             <strong>{{ task.paused }}</strong>
           </div>
         </div>
-        <div class="level mb-2">
+        <div v-if="task.control" class="level mb-2">
           <div class="level-left">Control</div>
           <div class="level-right">
               <strong>{{ task.control ? task.control.description : "no control"}}</strong>
           </div>
         </div>
-        <div class="level mb-2">
+        <div v-if="task.sensor" class="level mb-2">
           <div class="level-left">Sensor</div>
           <div class="level-right">
               <strong>{{ task.sensor ? task.sensor.description : "no sensor"}}</strong>

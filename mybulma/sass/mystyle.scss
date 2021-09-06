@@ -16,16 +16,17 @@ $white: #FFFFFF;
 $family-sans-serif: "Open Sans";
 $grey-dark: $brown;
 $grey-light: $beige-light;
-$primary: #52B788;
+$primary: #8FBC8B;
+$light:#d8d8d8;
 $info: #43a5df;
-$link: #137e4c;
-$warning: #EDE5A6;
-$danger: #da1b44;
+$link: #1E5631;
+$success: #17B169;
+$warning: #FFC72C;
+$danger: #C41E3A;
 $widescreen-enabled: false;
 $fullhd-enabled: false;
 
 $box-padding: 1rem;
-// $box-shadow: 1em;
 
 
 @import "../node_modules/bulma/bulma.sass";

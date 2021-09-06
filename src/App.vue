@@ -12,6 +12,7 @@
         </div>
       </div>
     </nav>
+
     <!-- DEVICES MENU NAV DROPDOWN -->
     <div v-if="devices.length > 0">
       <button id="button" v-on:click="togglePanel" class="button is-light is-fullwidth mt-2">
@@ -264,5 +265,11 @@ export default {
     -webkit-touch-callout: none;
     -ms-user-select: none;
     user-select: none;
+  }
+  .dot {
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    display: inline-block;
   }
 </style>

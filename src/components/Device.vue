@@ -1,7 +1,8 @@
 <template>
 <div class="mt-5">
-  <!-- TITLE -->
+
 <div class="container px-4">
+    <!-- TITLE  + edit name -->
     <div class="level">
       <div v-show="editing_mode" class="control level-item">
         <input v-model="form_name" v-bind:placeholder="device.name"
@@ -18,11 +19,16 @@
         <a v-on:click="toggleEdit" class="icon"><img src="edit_ico.png"/></a>
       </h1>
     </div>
+    <!-- last update -->
     <div class="level is-mobile ">
       <div class="level-left">
         <div class="level-item">
-          <img v-if="device.is_online" class="icon is-small" src="status_online.png"/>
-          <img v-else class="icon is-small" src="status_offline.ico"/>
+          <span v-if="!device.scheduler_running" class="dot has-background-warning"/>
+          <span v-else :class="{
+              dot: true,
+              'has-background-success': device.is_online,
+              'has-background-danger': !device.is_online,
+            }"/>
         </div>
         <div class="level-item">
           <p v-if="device.is_online" class="subtitle is-5">
@@ -38,16 +44,179 @@
     <!-- TABS -->
     <div class="tabs is-centered mt-5">
     <ul>
-      <li v-bind:class="{ 'is-active': stats }">
-        <a v-on:click="setStats">Stats</a>
+      <li v-bind:class="{ 'is-active': tab === 'home' }">
+        <a v-on:click="tab = 'home'">
+          <span class="icon">
+            <i class="fas fa-home" aria-hidden="true"></i>
+          </span>
+        </a>
       </li>
-      <li v-bind:class="{ 'is-active': settings }">
-        <a v-on:click="setSettings">Settings</a>
+      <li v-bind:class="{ 'is-active': tab === 'stats' }">
+        <a v-on:click="tab = 'stats'">Stats</a>
+      </li>
+      <li v-bind:class="{ 'is-active': tab === 'settings' }">
+        <a v-on:click="tab = 'settings'">Settings</a>
       </li>
     </ul>
     </div>
-    <!-- SCHEDULER -->
-    <div v-if="stats" class="container">
+
+    <div v-if="tab === 'home'" class="container">
+
+      <!-- plant -->
+      <article class="media">
+        <figure class="media-left">
+          <p class="image is-96x96">
+            <img class="is-rounded" src="https://trevisanuttos.com/wp-content/uploads/2020/04/Basil-Sweet-Genovese.jpeg">
+          </p>
+        </figure>
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>Basil</strong>
+              <br>
+              <small>Planted: 15 Aug 2021</small>
+            </p>
+            <hr>
+            <progress class="progress is-large mb-0 is-primary" value="30" max="100"/>
+            <div class="level p-0">
+              <div class="level-item p-0 m-0">
+                <p class="content"><small>12 days out of 45</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <hr>
+
+      <div
+        class="level is-mobile mb-1 notification p-2 is-success"
+        :style="getBackgroundStyle('#70e000')"
+      >
+        <div class="level-left">
+          <div class="level-item">
+            <span class="icon">
+              <i class="fas fa-temperature-high" aria-hidden="true"></i>
+            </span>
+            <!-- <small>Temp</small> -->
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item"><small>21</small></div>
+        </div>
+      </div>
+
+      <div
+        class="level is-mobile mb-1 notification p-2 is-success"
+        :style="getBackgroundStyle('#CCCCCC')"
+      >
+        <div class="level-left">
+          <div class="level-item">
+            <span class="icon">
+              <i class="fas fa-water" aria-hidden="true"></i>
+            </span>
+            <!-- <small>Temp</small> -->
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <progress class="progress is-dark" value="60" max="100">15%</progress>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="level is-mobile mb-1 notification p-2 is-success"
+        :style="getBackgroundStyle('#9c6644')"
+      >
+        <div class="level-left">
+          <div class="level-item">
+            <p><small>pH</small></p>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <p>5.6</p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="level is-mobile mb-1 notification p-2 is-success"
+        :style="getBackgroundStyle('#457b9d')"
+      >
+        <div class="level-left">
+          <div class="level-item">
+            <p><small>EC</small></p>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <p>1.3</p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="level is-mobile mb-1 notification p-2 is-success"
+        :style="getBackgroundStyle('#ffb703')"
+      >
+        <div class="level-left">
+          <div class="level-item">
+            <span class="icon">
+              <i class="fas fa-faucet" aria-hidden="true"></i>
+            </span>
+            <!-- <small>Temp</small> -->
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <p>0.86</p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="level is-mobile mb-1 notification p-2 is-success"
+        :style="getBackgroundStyle('#219ebc')"
+      >
+        <div class="level-left">
+          <div class="level-item">
+            <span class="icon">
+              <i class="fas fa-lightbulb" aria-hidden="true"></i>
+            </span>
+            <!-- <small>Temp</small> -->
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <span class="tag">ON</span>
+          </div>
+          <div class="level-item">
+            <span class="tag">07:00 - 22:00</span>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+      <!-- chart -->
+      <div class="tabs is-toggle is-fullwidth is-small px-5">
+        <ul>
+          <li
+            v-for="(sensor, index) in device.sensors"
+            :key="'dev_sensor_graph' + index"
+            :class="{ 'is-active': graph_sensor.id === sensor.id}"
+          >
+            <a v-on:click="graph_sensor=sensor">{{ sensor.name }}</a>
+          </li>
+        </ul>
+      </div>
+      <Chart :device_id="device.id" :sensor_id="graph_sensor.id" :title="graph_sensor.description"/>
+
+    </div>
+    <!-- STATS -->
+    <div v-if="tab === 'stats'" class="container">
+      <!-- scheduler -->
       <article v-if="device.scheduler_running" class="message is-success my-1">
         <div class="message-body">
           Scheduler is <strong>running</strong>
@@ -96,7 +265,7 @@
     </div>
 
     <!-- SETTINGS -->
-    <div v-if="settings" class="container">
+    <div v-if="tab === 'settings'" class="container">
       <div class="level">
         <div class="level-left title is-6">uuid</div>
         <div class="level-right subtitle is-6">{{ device.uuid }}</div>
@@ -114,7 +283,7 @@
           <div class="level-right subtitle is-6">{{ device.url }}</div>
       </div>
       <hr>
-      <!-- UNRECOGNIZED -->
+      <!-- unrecognized -->
       <article v-if="Object.keys(device.unrecognized).length > 0" class="message is-warning">
         <div class="message-body">Still some unrecognized sensors on this device.</div>
       </article>
@@ -243,12 +412,41 @@ import Task from './Task.vue';
 import Control from './Control.vue';
 import Sensor from './Sensor.vue';
 import AddTask from './AddTask.vue';
+import Chart from './Chart.vue';
 
 export default {
   props: ['device'],
 
   components: {
-    Task, Control, Sensor, AddTask,
+    Task, Control, Sensor, AddTask, Chart,
+  },
+
+  data() {
+    return {
+      // home / stats / settings
+      tab: 'home',
+
+      editing_mode: false,
+
+      refresh_is_loading: false,
+
+      options: {
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      },
+      // edit dev name
+      form_name: this.device.name,
+
+      // edit
+      isCategorize: false,
+      categorize: {},
+
+      // home
+      graph_sensor: this.device.sensors[0],
+    };
   },
 
   methods: {
@@ -300,23 +498,6 @@ export default {
       this.editing_mode = !this.editing_mode;
     },
 
-    // Tabs controls
-    setStats() {
-      this.stats = true;
-      this.detail = false;
-      this.settings = false;
-    },
-    setDetail() {
-      this.stats = false;
-      this.detail = true;
-      this.settings = false;
-    },
-    setSettings() {
-      this.stats = false;
-      this.detail = false;
-      this.settings = true;
-    },
-
     // settings
     showCategorize(name) {
       this.isCategorize = true;
@@ -331,32 +512,10 @@ export default {
       const date = new Date(parsedDate.getTime() - (new Date().getTimezoneOffset() * 60000));
       return date.toLocaleDateString('cs', this.options);
     },
-  },
 
-  data() {
-    return {
-      stats: true,
-      detail: false,
-      settings: false,
-
-      editing_mode: false,
-
-      refresh_is_loading: false,
-
-      options: {
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-      },
-      // edit dev name
-      form_name: this.device.name,
-
-      // edit
-      isCategorize: false,
-      categorize: {},
-    };
+    getBackgroundStyle(colorHex) {
+      return `background-image: -webkit-linear-gradient(-15deg, ${colorHex} 80%, #16009500 50%);`;
+    },
   },
 };
 </script>
