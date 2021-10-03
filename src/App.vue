@@ -55,7 +55,7 @@
 
     <!-- DEVICE CONTAINER -->
     <div v-if="active_device != null">
-      <Device :device="active_device"></Device>
+      <Device :device="active_device" @triggerRefresh="getDevice"></Device>
     </div>
 
     <!-- no devices -->
@@ -120,9 +120,10 @@ export default {
     // server comminication
     getDevices() {
       const path = `${Constants.HOST_URL}/devices`;
+      console.info('getting devices');
       axios.get(path)
         .then((res) => {
-          console.debug(`${res.data.length} devices`);
+          console.info(`got ${res.data.length} devices`);
           if (res.data.length < 1) {
             this.devices = [];
             return;
@@ -131,6 +132,7 @@ export default {
           if (!this.active_device) {
             [this.active_device] = this.devices;
             this.active_tab = this.active_device.id;
+            this.getDevice();
           }
         })
         .catch(() => {
@@ -150,6 +152,7 @@ export default {
           if (res.status !== 'success') {
             if (res.data) {
               this.active_device = res.data;
+              console.info('got active device');
             }
           }
         })
@@ -199,6 +202,7 @@ export default {
     },
     makeActive(dev) {
       this.active_device = dev;
+      this.getDevice();
       this.active_tab = dev.id;
       this.togglePanel();
     },

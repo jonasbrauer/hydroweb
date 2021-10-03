@@ -16,10 +16,10 @@
     </div>
 
     <!-- INT -->
-    <div v-else-if="control.input === 'int'" class="level is-mobile">
+    <div v-else-if="control.input === 'int' || control.input === 'float'" class="level is-mobile">
       <div class="field has-addons">
         <p class="control">
-          <input v-model="updated_control.value" type="number" style="max-width: 4em"
+          <input v-model="updated_control.value" type="number" style="max-width: 5em"
             :class="{
               input:true,
               'is-success': updated_control.value != control.value

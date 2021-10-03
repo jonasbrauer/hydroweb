@@ -1,7 +1,7 @@
 <script>
 
 export default {
-  HOST_URL: '/rest',
+  HOST_URL: 'http://www.hydroserver.home/rest',
   // HOST_URL: 'http://localhost:5000',
 };
 

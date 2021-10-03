@@ -45,17 +45,25 @@
     <div class="tabs is-centered mt-5">
     <ul>
       <li v-bind:class="{ 'is-active': tab === 'home' }">
-        <a v-on:click="tab = 'home'">
+        <a v-on:click="tab = 'home'; triggerRefresh()">
           <span class="icon">
-            <i class="fas fa-home" aria-hidden="true"></i>
+            <i class="fas fa-seedling" aria-hidden="true"></i>
           </span>
         </a>
       </li>
       <li v-bind:class="{ 'is-active': tab === 'stats' }">
-        <a v-on:click="tab = 'stats'">Stats</a>
+        <a v-on:click="tab = 'stats'">
+          <span class="icon">
+            <i class="fas fa-server" aria-hidden="true"></i>
+          </span>
+        </a>
       </li>
       <li v-bind:class="{ 'is-active': tab === 'settings' }">
-        <a v-on:click="tab = 'settings'">Settings</a>
+        <a v-on:click="tab = 'settings'">
+          <span class="icon">
+            <i class="fas fa-cog" aria-hidden="true"></i>
+          </span>
+        </a>
       </li>
     </ul>
     </div>
@@ -63,155 +71,32 @@
     <div v-if="tab === 'home'" class="container">
 
       <!-- plant -->
-      <article class="media">
-        <figure class="media-left">
-          <p class="image is-96x96">
-            <img class="is-rounded" src="https://trevisanuttos.com/wp-content/uploads/2020/04/Basil-Sweet-Genovese.jpeg">
-          </p>
-        </figure>
-        <div class="media-content">
-          <div class="content">
-            <p>
-              <strong>Basil</strong>
-              <br>
-              <small>Planted: 15 Aug 2021</small>
-            </p>
-            <hr>
-            <progress class="progress is-large mb-0 is-primary" value="30" max="100"/>
-            <div class="level p-0">
-              <div class="level-item p-0 m-0">
-                <p class="content"><small>12 days out of 45</small></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
+      <GrowPlan :device="device"/>
 
       <hr>
 
-      <div
-        class="level is-mobile mb-1 notification p-2 is-success"
-        :style="getBackgroundStyle('#70e000')"
-      >
-        <div class="level-left">
-          <div class="level-item">
-            <span class="icon">
-              <i class="fas fa-temperature-high" aria-hidden="true"></i>
-            </span>
-            <!-- <small>Temp</small> -->
-          </div>
-        </div>
-        <div class="level-right">
-          <div class="level-item"><small>21</small></div>
-        </div>
-      </div>
-
-      <div
-        class="level is-mobile mb-1 notification p-2 is-success"
-        :style="getBackgroundStyle('#CCCCCC')"
-      >
-        <div class="level-left">
-          <div class="level-item">
-            <span class="icon">
-              <i class="fas fa-water" aria-hidden="true"></i>
-            </span>
-            <!-- <small>Temp</small> -->
-          </div>
-        </div>
-        <div class="level-right">
-          <div class="level-item">
-            <progress class="progress is-dark" value="60" max="100">15%</progress>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="level is-mobile mb-1 notification p-2 is-success"
-        :style="getBackgroundStyle('#9c6644')"
-      >
-        <div class="level-left">
-          <div class="level-item">
-            <p><small>pH</small></p>
-          </div>
-        </div>
-        <div class="level-right">
-          <div class="level-item">
-            <p>5.6</p>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="level is-mobile mb-1 notification p-2 is-success"
-        :style="getBackgroundStyle('#457b9d')"
-      >
-        <div class="level-left">
-          <div class="level-item">
-            <p><small>EC</small></p>
-          </div>
-        </div>
-        <div class="level-right">
-          <div class="level-item">
-            <p>1.3</p>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="level is-mobile mb-1 notification p-2 is-success"
-        :style="getBackgroundStyle('#ffb703')"
-      >
-        <div class="level-left">
-          <div class="level-item">
-            <span class="icon">
-              <i class="fas fa-faucet" aria-hidden="true"></i>
-            </span>
-            <!-- <small>Temp</small> -->
-          </div>
-        </div>
-        <div class="level-right">
-          <div class="level-item">
-            <p>0.86</p>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="level is-mobile mb-1 notification p-2 is-success"
-        :style="getBackgroundStyle('#219ebc')"
-      >
-        <div class="level-left">
-          <div class="level-item">
-            <span class="icon">
-              <i class="fas fa-lightbulb" aria-hidden="true"></i>
-            </span>
-            <!-- <small>Temp</small> -->
-          </div>
-        </div>
-        <div class="level-right">
-          <div class="level-item">
-            <span class="tag">ON</span>
-          </div>
-          <div class="level-item">
-            <span class="tag">07:00 - 22:00</span>
-          </div>
-        </div>
-      </div>
+      <GrowSystem :device="device"/>
 
       <hr>
-      <!-- chart -->
-      <div class="tabs is-toggle is-fullwidth is-small px-5">
-        <ul>
-          <li
-            v-for="(sensor, index) in device.sensors"
-            :key="'dev_sensor_graph' + index"
-            :class="{ 'is-active': graph_sensor.id === sensor.id}"
-          >
-            <a v-on:click="graph_sensor=sensor">{{ sensor.name }}</a>
-          </li>
-        </ul>
-      </div>
-      <Chart :device_id="device.id" :sensor_id="graph_sensor.id" :title="graph_sensor.description"/>
+      <!-- chart
+      <div v-if="device.grow_system">
+        <div class="tabs is-toggle is-fullwidth is-small px-5">
+          <ul>
+            <li
+              v-for="(sensor, index) in device.sensors"
+              :key="'dev_sensor_graph' + index"
+              :class="{ 'is-active': graph_sensor.id === sensor.id}"
+            >
+              <a v-on:click="graph_sensor=sensor">{{ sensor.name }}</a>
+            </li>
+          </ul>
+        </div>
+        <Chart
+          :device_id="device.id"
+          :sensor_id="graph_sensor.id"
+          :color="`#${graph_sensor.id}${graph_sensor.id}${graph_sensor.id}F${graph_sensor.id}3FF`"
+        />
+      </div> -->
 
     </div>
     <!-- STATS -->
@@ -412,13 +297,16 @@ import Task from './Task.vue';
 import Control from './Control.vue';
 import Sensor from './Sensor.vue';
 import AddTask from './AddTask.vue';
-import Chart from './Chart.vue';
+// import Chart from './Chart.vue';
+
+import GrowSystem from './GrowSystem.vue';
+import GrowPlan from './GrowPlan.vue';
 
 export default {
   props: ['device'],
 
   components: {
-    Task, Control, Sensor, AddTask, Chart,
+    Task, Control, Sensor, AddTask, GrowSystem, GrowPlan,
   },
 
   data() {
@@ -513,9 +401,10 @@ export default {
       return date.toLocaleDateString('cs', this.options);
     },
 
-    getBackgroundStyle(colorHex) {
-      return `background-image: -webkit-linear-gradient(-15deg, ${colorHex} 80%, #16009500 50%);`;
+    triggerRefresh() {
+      this.$emit('triggerRefresh');
     },
+
   },
 };
 </script>
