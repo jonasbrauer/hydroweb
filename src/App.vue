@@ -146,13 +146,11 @@ export default {
         return;
       }
       const path = `${Constants.HOST_URL}/devices/${this.active_device.id}`;
-      console.info(`Getting: ${path}`);
       axios.get(path)
         .then((res) => {
           if (res.status !== 'success') {
             if (res.data) {
               this.active_device = res.data;
-              console.info('got active device');
             }
           }
         })

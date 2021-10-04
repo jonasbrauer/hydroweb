@@ -78,25 +78,6 @@
       <GrowSystem :device="device"/>
 
       <hr>
-      <!-- chart
-      <div v-if="device.grow_system">
-        <div class="tabs is-toggle is-fullwidth is-small px-5">
-          <ul>
-            <li
-              v-for="(sensor, index) in device.sensors"
-              :key="'dev_sensor_graph' + index"
-              :class="{ 'is-active': graph_sensor.id === sensor.id}"
-            >
-              <a v-on:click="graph_sensor=sensor">{{ sensor.name }}</a>
-            </li>
-          </ul>
-        </div>
-        <Chart
-          :device_id="device.id"
-          :sensor_id="graph_sensor.id"
-          :color="`#${graph_sensor.id}${graph_sensor.id}${graph_sensor.id}F${graph_sensor.id}3FF`"
-        />
-      </div> -->
 
     </div>
     <!-- STATS -->
@@ -146,7 +127,11 @@
       </article>
 
       <!-- add task -->
-      <AddTask :device="device"></AddTask>
+      <button v-on:click="addTask=true" class="button is-success is-fullwidth mt-2"
+        v-bind:disabled="addTask">
+        <i class="fa fa-plus"></i>
+      </button>
+      <TaskAdd v-if="addTask" :device="device" @cancel="addTask=false"></TaskAdd>
     </div>
 
     <!-- SETTINGS -->
@@ -296,8 +281,8 @@ import Constants from './Constants.vue';
 import Task from './Task.vue';
 import Control from './Control.vue';
 import Sensor from './Sensor.vue';
-import AddTask from './AddTask.vue';
-// import Chart from './Chart.vue';
+import TaskAdd from './TaskAdd.vue';
+import { prettyDate } from './utils';
 
 import GrowSystem from './GrowSystem.vue';
 import GrowPlan from './GrowPlan.vue';
@@ -306,7 +291,7 @@ export default {
   props: ['device'],
 
   components: {
-    Task, Control, Sensor, AddTask, GrowSystem, GrowPlan,
+    Task, Control, Sensor, TaskAdd, GrowSystem, GrowPlan,
   },
 
   data() {
@@ -314,17 +299,12 @@ export default {
       // home / stats / settings
       tab: 'home',
 
+      addTask: false,
+
       editing_mode: false,
 
       refresh_is_loading: false,
 
-      options: {
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-      },
       // edit dev name
       form_name: this.device.name,
 
@@ -396,9 +376,7 @@ export default {
 
     // misc tools
     formatTime(timeString) {
-      const parsedDate = new Date(timeString);
-      const date = new Date(parsedDate.getTime() - (new Date().getTimezoneOffset() * 60000));
-      return date.toLocaleDateString('cs', this.options);
+      return prettyDate(timeString);
     },
 
     triggerRefresh() {
