@@ -120,10 +120,8 @@ export default {
     // server comminication
     getDevices() {
       const path = `${Constants.HOST_URL}/devices`;
-      console.info('getting devices');
       axios.get(path)
         .then((res) => {
-          console.info(`got ${res.data.length} devices`);
           if (res.data.length < 1) {
             this.devices = [];
             return;
@@ -173,13 +171,11 @@ export default {
     startInterval() {
       if (this.interval_id) {
         // stop if running...
-        console.error('stopping..');
         this.stopInterval();
       }
       this.interval_id = setInterval(() => {
         this.getDevice();
       }, INTERVAL_VALUE);
-      console.error('interval started');
     },
     stopInterval() {
       clearInterval(this.interval_id);

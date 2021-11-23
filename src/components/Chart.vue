@@ -193,7 +193,6 @@ export default {
 
     fetchChart(labelMapper, since = '', itemCount = 300) {
       const path = `${Constants.HOST_URL}/devices/${this.device_id}/sensors/${this.grow_property.sensor.id}/history?count=${itemCount}&since=${since}`;
-      console.info(`Getting graph ${path}`);
       this.loading = true;
       axios.get(path)
         .then((res) => {
@@ -217,22 +216,18 @@ export default {
   },
 
   mounted() {
-    console.log('mounted');
     this.clickDay();
     this.property_last = this.grow_property;
     this.device_id_last = this.device_id;
   },
 
   updated() {
-    console.log('updated');
     if (this.property_last.id !== this.grow_property.id) {
       // property changed, reload graph
-      console.log('property changed, reload graph');
       this.property_last = this.grow_property;
       this.clickDay();
     } else if (this.device_id && this.device_id_last !== this.device_id) {
       // device changed, reload graph
-      console.log('device changed, reload graph');
       this.device_id_last = this.device_id;
       this.clickDay();
     }

@@ -21,7 +21,6 @@
 <script>
 import axios from 'axios';
 import { HOST_URL } from './Constants.vue';
-import { prettyDate } from './utils';
 import TaskForm from './TaskForm.vue';
 
 export default {

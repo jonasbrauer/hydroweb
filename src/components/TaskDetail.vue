@@ -50,7 +50,7 @@
         <div class="column">
           <p v-for="(v, k) in task.meta" :key="'metak'+k" >{{k}}</p>
         </div>
-        <div class="column is-one-fifth">
+        <div class="column is-half has-text-right">
           <p v-for="(v, k) in task.meta" :key="'metav'+k">{{v}}</p>
         </div>
       </div>

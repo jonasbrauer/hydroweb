@@ -8,7 +8,6 @@
       class="input" type="text" placeholder="describe the task">
     </div>
   </div>
-
   <div class="field">
     <label class="label">Schedule (cron)</label>
     <div class="control">
@@ -56,10 +55,9 @@
 
   <!-- META -->
   <label class="label">Metadata</label>
-  <!-- pairs:{{ metaPairs }} -->
   <div v-for="(meta, i) in Object.entries(task.meta)" :key="i + 'meta'" class="field">
     <div class="control has-icons-left">
-      <input class="input" :placeholder="i + '. key'"
+      <input class="input" :placeholder="i + 1 + '. key'"
              v-model="tmpMetaKeys[i]" v-on:input="modifyMetaKey($event, meta[0], i)">
       <span class="icon is-left">
         <i class="fas fa-key"></i>
@@ -75,7 +73,7 @@
   </div>
 
   <button class="button is-fullwidth"
-  v-on:click="task.meta.newKey = 'value'; tmpMetaKeys.push['value']">
+  v-on:click="task.meta.newKey = ''; tmpMetaKeys.push['xx']">
     <i class="fa fa-plus"></i>
   </button>
 </div>
@@ -84,7 +82,6 @@
 <script>
 import axios from 'axios';
 import { HOST_URL } from './Constants.vue';
-import { prettyDate } from './utils';
 
 export default {
   props: ['device', 'task'],
@@ -95,11 +92,6 @@ export default {
 
       tmpMetaKeys: [],
       available_tasks: [],
-
-      // metaPairs: [[]],
-      // editTask: {
-      //   meta: {},
-      // },
       addTaskError: null,
     };
   },
@@ -107,6 +99,7 @@ export default {
   methods: {
 
     modifyMetaKey(event, oldKey, index) {
+      // on key input change, update the actual task's meta
       const newKey = this.tmpMetaKeys[index];
       this.task.meta[newKey] = this.task.meta[oldKey];
       delete this.task.meta[oldKey];

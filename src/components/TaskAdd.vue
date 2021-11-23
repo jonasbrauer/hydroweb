@@ -10,7 +10,6 @@
       <p class="card-header-title is-1">Add a new task</p>
     </header>
   <div class="card-content">
-    parent: {{ addTaskData }}
     <TaskForm :device="device" :task="addTaskData"></TaskForm>
 
     <article v-if="addTaskError" class="message is-danger">
@@ -23,9 +22,6 @@
     <a v-on:click="postTask()" class="is-success card-footer-item">Add</a>
     <a v-on:click="cancel()" class="card-footer-item">Cancel</a>
   </footer>
-  <!-- </div> -->
-  <!-- <div id="add-task"></div> -->
-  <!-- {{ printT() }} -->
 </div>
 </template>
 
