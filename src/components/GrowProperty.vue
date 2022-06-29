@@ -5,19 +5,21 @@
       'is-mobile':true,
       'mb-1': true, 'p-2': true,
       notification: true,
-      'is-success': property.sensor,
-      'is-light': !property.sensor,
+      'has-text-dark': true,
   }"
-  :style="getBackgroundStyle(property.color)"
   >
+  <!-- :style="getBackgroundStyle('#e5e5e5')" -->
 
     <div class="level-left">
-      <div class="level-item has-text-weight-bold has-text-white">
-        {{ property.name }}
+      <div class="level-item">
+        <div class="ml-1">
+          <p>{{ property.name }}</p>
+          <p style="font-size: 0.6em;">{{ property.description }}</p>
+        </div>
       </div>
     </div>
 
-    <div class="level-right">
+    <div class="level-right pr-0 mr-0">
       <div class="level-item">
         <div v-if="!property.sensor">
 
@@ -49,8 +51,11 @@
           </div>
 
         </div>
-        <div v-else>
-          {{ property.sensor.last_value }} {{ property.sensor.unit }}
+        <div v-else class="level is-mobile">
+          <p class="mr-2">{{ property.sensor.last_value }} {{ property.sensor.unit }}</p>
+          <span class="icon has-text-success">
+            <i class="fas fa-check-circle"></i>
+          </span>
         </div>
       </div>
     </div>
@@ -93,8 +98,11 @@ export default {
     },
 
     getBackgroundStyle(colorHex) {
-      return `background-image: -webkit-linear-gradient(0deg, ${colorHex} 65%, #16009500 65%);`;
-    },
+      var width = 100;
+      if (this.property.sensor) {
+        width = 50;
+      }
+      return `background-image: -webkit-linear-gradient(0deg, ${colorHex} ${width}%, #ffffff00 ${width + 80}%);`;    },
   },
 
 };

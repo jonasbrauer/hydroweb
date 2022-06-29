@@ -2,30 +2,29 @@
 <div>
   <div class="level box mb-2 is-mobile">
     <div v-if="!is_edit" class="level-left">
-      <p class="mr-2">{{ sensor.description }}</p>
       <a v-on:click="toggleEdit" class="icon">
         <i class="fas fa-edit"></i>
       </a>
-      <a v-on:click="sensorDelete(sensor.id)" class="icon">
-        <i class="fa fa-times" aria-hidden="true"></i>
-      </a>
+      <p class="ml-4">{{ sensor.description }}</p>
     </div>
     <!-- edit -->
     <div v-else class="level-left">
-      <div class="field is-grouped">
-        <div class="control mr-0">
-          <input v-model="edit_name" class="input" type="text">
-        </div>
-        <div class="control mx-1">
-          <button v-on:click="sensorEdit" class="button is-outlined">
-            <span class="icon is-medium"><img src="save_ico.png"/></span>
-          </button>
-        </div>
-        <div class="control">
-          <button v-on:click="toggleEdit" class="button is-outlined">
-            <span class="icon is-medium"><img src="cancel_ico.png"/></span>
-          </button>
-        </div>
+      <div class="control mr-0">
+        <input v-model="edit_name" class="input" type="text">
+      </div>
+      <div class="control mx-1">
+        <button v-on:click="sensorEdit" class="button is-success is-outlined">
+          <span class="icon is-small">
+            <i class="fas fa-check"></i>
+          </span>
+        </button>
+      </div>
+      <div class="control">
+        <button v-on:click="toggleEdit" class="button is-outlined">
+          <span class="icon is-small">
+            <i class="fas fa-times"></i>
+          </span>
+        </button>
       </div>
     </div>
   <div class="level-right">

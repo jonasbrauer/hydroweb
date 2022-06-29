@@ -1,25 +1,30 @@
 <template>
 <div class="level box mb-2 is-mobile">
   <div v-if="!is_edit" class="level-left">
-    <p class="mr-4">{{ control.description }}</p>
     <a v-on:click="toggleEdit" class="icon">
       <i class="fas fa-edit"></i>
     </a>
-    <a v-on:click="controlDelete(control.id)" class="icon">
-      <i class="fa fa-times" aria-hidden="true"></i>
-    </a>
+    <p class="ml-4">{{ control.description }}</p>
   </div>
   <!-- edit -->
   <div v-if="is_edit" class="level-left">
     <div class="field is-grouped">
-      <div class="control">
+      <div class="control m-0">
         <input v-model="edit_name" class="input" type="text">
       </div>
-      <div class="control">
-        <a v-on:click="controlEdit" class="button is-success is-outlined">save</a>
+      <div class="control mx-1">
+        <a v-on:click="controlEdit" class="button is-success is-outlined">
+          <span class="icon is-small">
+            <i class="fas fa-check"></i>
+          </span>
+        </a>
       </div>
       <div class="control">
-        <a v-on:click="toggleEdit" class="button is-danger is-outlined">cancel</a>
+        <a v-on:click="toggleEdit" class="button is-outlined">
+          <span class="icon is-small">
+            <i class="fas fa-times"></i>
+          </span>
+        </a>
       </div>
     </div>
   </div>

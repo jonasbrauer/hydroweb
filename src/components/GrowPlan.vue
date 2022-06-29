@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div v-if="!device.grow_plan">
+    <!-- <div v-if="!device.grow_plan">
       <button class="my-5 button is-fullwidth">NO GROW PLAN ASSIGNED</button>
-    </div>
+    </div> -->
 
-    <div v-else>
+    <div>
       <article class="media">
           <figure class="media-left">
             <p class="image is-96x96">
@@ -14,21 +14,21 @@
           <div class="media-content">
             <div class="content">
               <p>
-                <strong>Basil</strong>
+                <strong>Herbs</strong>
                 <br>
                 <small>Planted: 15 Aug 2021</small>
               </p>
               <hr>
-              <progress class="progress is-large mb-0 is-primary" value="30" max="100"/>
+              <progress class="progress is-large mb-0 is-primary" value="88" max="100"/>
               <div class="level p-0">
                 <div class="level-item p-0 m-0">
-                  <p class="content"><small>12 days out of 45</small></p>
+                  <p class="content"><small>40 days out of 45</small></p>
                 </div>
               </div>
             </div>
           </div>
-        </article>
-      </div>
+      </article>
+    </div>
 
   </div>
 </template>

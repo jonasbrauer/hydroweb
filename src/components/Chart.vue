@@ -188,6 +188,11 @@ export default {
       this.chartData.data.datasets[0].borderColor = this.color ? this.color : '#8fbc8b';
 
       const ctx = document.getElementById('planet-chart');
+
+      // Destroy the old instance to prevent graph flickering
+      if (this.chart) {
+        this.chart.destroy();
+      }
       this.chart = new Chart(ctx, this.chartData);
     },
 
