@@ -130,12 +130,13 @@ export default {
   methods: {
 
     assignSystem(systemId) {
-      const path = `${Constants.HOST_URL}/grow/systems/${this.device.id}`;
+      const path = `${Constants.HOST_URL}/grow/systems/assign`;
       const options = {
         headers: { 'Content-Type': 'application/json' },
       };
       const data = {
         system_id: systemId,
+        device_id: this.device.id
       };
       axios.post(path, data, options)
         .then(() => {
@@ -147,7 +148,7 @@ export default {
         });
     },
     unassignSystem() {
-      const path = `${Constants.HOST_URL}/grow/systems/${this.device.id}`;
+      const path = `${Constants.HOST_URL}/grow/systems/unassign/${this.device.id}`;
       axios.delete(path)
         .then(() => {
         })

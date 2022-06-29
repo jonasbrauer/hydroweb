@@ -15,9 +15,6 @@
 
         <span class="mx-4">{{ task.name }}</span>
 
-        <span v-if="task.locked" class="icon">
-          <i class="fa fa-lock" aria-hidden="true"></i>
-        </span>
       </p>
 
       <!-- PLAY/PAUSE - only for unlocked tasks -->
@@ -35,19 +32,19 @@
     <TaskEdit v-if="is_edit" :device="device" :task="task" @cancel="is_edit=false"/>
 
     <!-- DETAIL FOOTER -->
-    <footer v-if="!task.locked" class="card-footer"
+    <footer class="card-footer"
       v-bind:class="{'is-hidden': !is_detail || is_edit}">
 
       <a v-if="!is_delete_modal" v-on:click="toggleEdit()" class="card-footer-item">
-        <strong>Edit</strong>
+        Edit
       </a>
-      <a v-if="!is_delete_modal" v-on:click="toggleDeleteModal()"
+      <a v-if="!is_delete_modal && !task.locked" v-on:click="toggleDeleteModal()"
       class="card-footer-item has-text-danger">
-        <strong>Delete</strong>
+        Delete
       </a>
       <a v-if="!is_delete_modal" v-on:click="toggleDetail()"
          class="card-footer-item has-text-black">
-        <strong>Cancel</strong>
+        Cancel
       </a>
       <!-- really delete? -->
       <a v-if="is_delete_modal" v-on:click="deleteTask()"
@@ -55,8 +52,8 @@
         <strong>You sure? Yes!</strong>
       </a>
       <a v-if="is_delete_modal" v-on:click="toggleDeleteModal()"
-         class="card-footer-item has-text-black">
-        <strong>Cancel</strong>
+         class="card-footer-item">
+        Cancel
       </a>
     </footer>
 

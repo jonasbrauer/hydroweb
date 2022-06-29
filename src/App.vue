@@ -25,7 +25,7 @@
           <i class="fa fa-microchip"></i>
           <p class="ml-3">show all devices</p>
         </button>
-        <div v-if="devices.length > 0">
+        <div v-if="devices.length > 0" class="p-1">
           <nav class="panel container">
             <a v-for="(device, d_index) in devices" :key="'d'+d_index"
               v-bind:class="{'is-active': isActive(device)}"
@@ -39,17 +39,20 @@
           </nav>
         </div>
         <!-- scan -->
-        <button v-on:click="postScan" :class="{
-          button:true,
-          'is-fullwidth':true,
-          'is-link':true,
-          'is-loading':scan_loading
-        }">
-          <span class="icon is-small">
-            <i class="fas fa-barcode"></i>
-          </span>
-          <span>Scan</span>
-        </button>
+        <div class="container mt-1 p-1">
+          <button disabled v-on:click="postScan" :class="{
+            button:true,
+            'is-fullwidth':true,
+            'is-outlined':true,
+            'is-link':true,
+            'is-loading':scan_loading
+          }">
+            <span class="icon is-small">
+              <i class="fas fa-barcode"></i>
+            </span>
+            <span>Scan</span>
+          </button>
+        </div>
 
     </div>
 
